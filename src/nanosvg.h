@@ -1087,11 +1087,11 @@ error:
 }
 
 // We roll our own string to float because the std library one uses locale and messes things up.
-static double nsvg__atof(const char* s)
+static float nsvg__atof(const char* s)
 {
 	char* cur = (char*)s;
 	char* end = NULL;
-	double res = 0.0, sign = 1.0;
+	float res = 0.0, sign = 1.0;
 	long long intPart = 0, fracPart = 0;
 	char hasIntPart = 0, hasFracPart = 0;
 
@@ -1108,7 +1108,7 @@ static double nsvg__atof(const char* s)
 		// Parse digit sequence
 		intPart = strtoll(cur, &end, 10);
 		if (cur != end) {
-			res = (double)intPart;
+			res = (float)intPart;
 			hasIntPart = 1;
 			cur = end;
 		}
@@ -1121,7 +1121,7 @@ static double nsvg__atof(const char* s)
 			// Parse digit sequence
 			fracPart = strtoll(cur, &end, 10);
 			if (cur != end) {
-				res += (double)fracPart / pow(10.0, (double)(end - cur));
+				res += (float)fracPart / powf(10.0, (float)(end - cur));
 				hasFracPart = 1;
 				cur = end;
 			}
@@ -1138,7 +1138,7 @@ static double nsvg__atof(const char* s)
 		cur++; // skip 'E'
 		expPart = strtol(cur, &end, 10); // Parse digit sequence with sign
 		if (cur != end) {
-			res *= pow(10.0, (double)expPart);
+			res *= powf(10.0, (float)expPart);
 		}
 	}
 
@@ -1270,9 +1270,9 @@ static unsigned int nsvg__parseColorRGB(const char* str)
 			else break;
 		}
 		if (i == 3) {
-			rgbi[0] = roundf(rgbf[0] * 2.55f);
-			rgbi[1] = roundf(rgbf[1] * 2.55f);
-			rgbi[2] = roundf(rgbf[2] * 2.55f);
+			rgbi[0] = (unsigned int)roundf(rgbf[0] * 2.55f);
+			rgbi[1] = (unsigned int)roundf(rgbf[1] * 2.55f);
+			rgbi[2] = (unsigned int)roundf(rgbf[2] * 2.55f);
 		} else {
 			rgbi[0] = rgbi[1] = rgbi[2] = 128;
 		}
